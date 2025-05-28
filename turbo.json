@@ -1,11 +1,23 @@
 {
-  "$schema": "https://turborepo.com/schema.json",
+  "$schema": "https://turbo.build/schema.json",
   "ui": "tui",
+  "globalEnv": [
+    "API_KEY_PROD_GET_INSTITUTION",
+    "API_KEY_PROD_GET_IPA",
+    "API_KEY_PROD_GET_INFOCAMERE",
+    "UAT",
+    "PROD",
+    "API_KEY_PROD_GET_USERS"
+  ],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "outputs": [".next/**", "!.next/cache/**"]
+      "outputs": [".next/**", "dist/**", "!.next/cache/**"]
+    },
+    "package": {
+      "outputs": ["dist/**", "package.zip"],
+      "dependsOn": ["build"]
     },
     "lint": {
       "dependsOn": ["^lint"]

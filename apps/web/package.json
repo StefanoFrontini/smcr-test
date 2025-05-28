@@ -4,25 +4,52 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack --port 3000",
+    "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "build:package": "cp -r .next/static .next/standalone/apps/web/.next && cp -r public .next/standalone/apps/web",
+    "package": "node scripts/package.js",
+    "start": "./node_modules/next/dist/bin/next start",
     "lint": "next lint --max-warnings 0",
-    "check-types": "tsc --noEmit"
+    "check-types": "tsc --noEmit",
+    "prisma:deploy": "prisma migrate deploy",
+    "prisma:generate": "prisma generate"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
+    "@better-fetch/fetch": "^1.1.17",
+    "@hookform/resolvers": "^5.0.1",
+    "@prisma/client": "6.5.0",
+    "@radix-ui/react-radio-group": "^1.3.6",
     "@repo/ui": "*",
-    "next": "^15.3.0",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "@tanstack/react-table": "^8.21.3",
+    "archiver": "^7.0.1",
+    "better-auth": "^1.2.4",
+    "lucide-react": "^0.479.0",
+    "next": "^15.1.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-dropzone": "^14.3.8",
+    "react-hook-form": "^7.55.0",
+    "react-pdf": "^9.2.1",
+    "sonner": "^2.0.1",
+    "tw-animate-css": "^1.2.5",
+    "zod": "^3.24.2"
   },
   "devDependencies": {
     "@repo/eslint-config": "*",
     "@repo/typescript-config": "*",
-    "@types/node": "^22.15.3",
-    "@types/react": "19.1.0",
-    "@types/react-dom": "19.1.1",
+    "@tailwindcss/postcss": "^4.0.14",
+    "@types/node": "^20",
+    "@types/react": "19.0.2",
+    "@types/react-dom": "19.0.2",
     "eslint": "^9.27.0",
-    "typescript": "5.8.2"
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "postcss": "^8.5.3",
+    "prisma": "^6.5.0",
+    "tailwindcss": "^4.0.14",
+    "tsx": "^4.19.3",
+    "typescript": "5.5.4"
   }
 }
