@@ -49,8 +49,9 @@ jobs:
           fi
           # Move the web app content to root
           mv ./deploy/apps/web/* ./deploy/
-          rmdir ./deploy/apps/web
-          rmdir ./deploy/apps
+          # Force remove directories
+          rm -rf ./deploy/apps/web
+          rm -rf ./deploy/apps
           # Copy static files
           mkdir -p ./deploy/.next
           cp -r .next/static ./deploy/.next/static
