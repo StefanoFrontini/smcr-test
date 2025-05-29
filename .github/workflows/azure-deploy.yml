@@ -30,9 +30,12 @@ jobs:
 
       - name: Build packages and application
         run: |
+          # Install all dependencies first
+          yarn install --frozen-lockfile
+          # Build the application
           yarn build --filter=web
-          # Ensure styled-jsx is included
-          cp -r node_modules/styled-jsx apps/web/.next/standalone/node_modules/
+          # Ensure styled-jsx is included from web's node_modules
+          cp -r apps/web/node_modules/styled-jsx apps/web/.next/standalone/node_modules/ || true
         env:
           NEXT_TELEMETRY_DISABLED: 1
           CI: false
