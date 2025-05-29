@@ -37,16 +37,17 @@ jobs:
       - name: Prepare deployment package
         run: |
           cd apps/web
-          # Copy standalone output
-          cp -r .next/standalone ./deploy
-          # Create .next directory in deploy
-          mkdir -p ./deploy/.next
+          # Create deploy directory
+          mkdir -p ./deploy
+          # Copy all files from standalone output to deploy root
+          cp -r .next/standalone/* ./deploy/
           # Copy static files
+          mkdir -p ./deploy/.next
           cp -r .next/static ./deploy/.next/static
-          # Copy public files
-          cp -r public ./deploy/public
-          # Create package.json for Azure
-          echo '{"scripts":{"start":"node server.js"}}' > ./deploy/package.json
+          # Copy public files (if not already copied)
+          if [ ! -d "./deploy/public" ]; then
+            cp -r public ./deploy/public
+          fi
 
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
