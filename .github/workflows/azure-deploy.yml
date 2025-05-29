@@ -39,20 +39,22 @@ jobs:
           cd apps/web
           # Create deploy directory
           mkdir -p ./deploy
-          # Copy ONLY the standalone build content to deploy root
-          cp -r .next/standalone/apps/web/* ./deploy/
-          # Copy static files to the correct location
+          # Copy the entire standalone output
+          cp -r .next/standalone/* ./deploy/
+          # Move the web app content to root
+          mv ./deploy/apps/web/* ./deploy/
+          rmdir ./deploy/apps/web
+          rmdir ./deploy/apps
+          # Copy static files
           mkdir -p ./deploy/.next
           cp -r .next/static ./deploy/.next/static
           # Copy public files
           cp -r public ./deploy/public
-          # Create proper package.json for Azure (overwrite any existing one)
-          echo '{"scripts":{"start":"node server.js"}}' > ./deploy/package.json
-          # List files to verify structure
-          echo "Deploy directory contents:"
+          # Verify structure
+          echo "Final deploy directory contents:"
           ls -la ./deploy/
-          echo "Checking for server.js:"
-          ls -la ./deploy/server.js || echo "server.js not found in root"
+          echo "Checking critical files:"
+          ls -la ./deploy/server.js ./deploy/next ./deploy/node_modules
 
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
