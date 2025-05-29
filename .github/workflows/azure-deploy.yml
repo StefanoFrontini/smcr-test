@@ -24,9 +24,8 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
-      - name: Build application
-        run: yarn build
-        working-directory: ./apps/web
+      - name: Build packages and application
+        run: yarn build --filter=web
         env:
           NEXT_TELEMETRY_DISABLED: 1
           CI: false
