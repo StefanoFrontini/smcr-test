@@ -24,6 +24,10 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
+      - name: Generate Prisma client
+        run: yarn prisma generate
+        working-directory: ./apps/web
+
       - name: Build packages and application
         run: yarn build --filter=web
         env:
