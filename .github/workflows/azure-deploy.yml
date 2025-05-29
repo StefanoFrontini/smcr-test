@@ -29,7 +29,10 @@ jobs:
         working-directory: ./apps/web
 
       - name: Build packages and application
-        run: yarn build --filter=web
+        run: |
+          yarn build --filter=web
+          # Ensure styled-jsx is included
+          cp -r node_modules/styled-jsx apps/web/.next/standalone/node_modules/
         env:
           NEXT_TELEMETRY_DISABLED: 1
           CI: false
@@ -65,9 +68,14 @@ jobs:
           # Ensure successful exit
           exit 0
 
+      - name: Verify Node.js version
+        run: node --version
+
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
         with:
           app-name: "smcr-test"
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           package: ./apps/web/deploy
+          app-settings: |
+            WEBSITE_NODE_DEFAULT_VERSION=22-lts
