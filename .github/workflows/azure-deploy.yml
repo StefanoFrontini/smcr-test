@@ -44,9 +44,13 @@ jobs:
           # Copy static files
           mkdir -p ./deploy/.next
           cp -r .next/static ./deploy/.next/static
-          # Copy public files (if not already copied)
-          if [ ! -d "./deploy/public" ]; then
-            cp -r public ./deploy/public
+          # Copy public files
+          cp -r public ./deploy/public
+          # Create proper package.json for Azure
+          echo '{"scripts":{"start":"node server.js"}}' > ./deploy/package.json
+          # Copy node_modules if they exist
+          if [ -d "node_modules" ]; then
+            cp -r node_modules ./deploy/
           fi
 
       - name: Deploy to Azure Web App
