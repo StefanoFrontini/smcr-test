@@ -39,6 +39,8 @@ jobs:
           cd apps/web
           # Copy standalone output
           cp -r .next/standalone ./deploy
+          # Create .next directory in deploy
+          mkdir -p ./deploy/.next
           # Copy static files
           cp -r .next/static ./deploy/.next/static
           # Copy public files
