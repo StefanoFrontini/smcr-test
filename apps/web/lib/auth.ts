@@ -1,8 +1,7 @@
+import { PrismaClient } from "@prisma/client";
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
-import { PrismaClient } from "@prisma/client";
-import { organization } from "better-auth/plugins";
-import { customSession } from "better-auth/plugins";
+import { customSession, organization } from "better-auth/plugins";
 
 const prisma = new PrismaClient();
 export const auth = betterAuth({
@@ -12,6 +11,13 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
     minPasswordLength: 6,
+  },
+  socialProviders: {
+    microsoft: {
+      clientId: process.env.MICROSOFT_CLIENT_ID!,
+      clientSecret: process.env.MICROSOFT_CLIENT_SECRET!,
+      tenantId: process.env.MICROSOFT_TENANT_ID,
+    },
   },
   plugins: [
     organization({
