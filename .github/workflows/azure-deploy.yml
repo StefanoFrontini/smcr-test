@@ -1,0 +1,49 @@
+name: Deploy to Azure App Service
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+          cache: "yarn"
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Build application
+        run: yarn build
+        working-directory: ./apps/web
+        env:
+          NEXT_TELEMETRY_DISABLED: 1
+          CI: false
+
+      - name: Prepare deployment package
+        run: |
+          cd apps/web
+          # Copy standalone output
+          cp -r .next/standalone ./deploy
+          # Copy static files
+          cp -r .next/static ./deploy/.next/static
+          # Copy public files
+          cp -r public ./deploy/public
+          # Create package.json for Azure
+          echo '{"scripts":{"start":"node server.js"}}' > ./deploy/package.json
+
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: "smcr-test"
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: ./apps/web/deploy
