@@ -48,10 +48,9 @@ jobs:
           cp -r public ./deploy/public
           # Create proper package.json for Azure
           echo '{"scripts":{"start":"node server.js"}}' > ./deploy/package.json
-          # Copy node_modules if they exist
-          if [ -d "node_modules" ]; then
-            cp -r node_modules ./deploy/
-          fi
+          # List files to verify structure
+          echo "Deploy directory contents:"
+          ls -la ./deploy/
 
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
